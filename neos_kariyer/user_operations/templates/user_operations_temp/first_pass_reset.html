@@ -1,0 +1,76 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load static %}
+<div class="container" style="margin-top:150px;margin-bottom:150px">
+        <div class="row" style="background-color:white;padding:20px 40px;margin:auto;max-width:900px">
+            <div class="col-6">
+                <form action="." method="POST">
+                    <h3>Parola Sıfırlama</h3>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="kullanici">Kullanıcı Adı Veya E-posta :</label><input id="yetenek" name="bilgi" type="text" ><br><br>
+                    
+        
+                        
+                    </div>
+                    <br />
+                    
+                    
+                    <button id="tikla" type="button" data-bs-toggle="modal" data-bs-target="#onayla" class="btn btn-lg btn-primary">
+                        Doğrulama Kodu Gönder
+                    </button>
+
+                
+            </div>
+            
+
+        </div>
+
+
+
+    </div>
+    <div class="modal fade" id="onayla" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Email Doğrula</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            {% csrf_token %}
+            <div class="modal-body">
+              <label for="baslik">Doğrulama Kodu : <input type="text" name="dogrulaemail"></label>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+              <button type="submit" class="btn btn-primary">Doğrula</button>
+            </div>
+        </form>
+          </div>
+        </div>
+      </div> 
+    <script>
+    $(document).ready(function () {
+        $("#tikla").click(function (event) {
+           dili = $("#yetenek").val(),
+            alert("Doğrulma Kodu Gönderildi")
+          $.ajax({
+            type: "POST",
+            url: "/user/kod/",
+            data: {
+              dili: dili,
+              
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (data) {
+              $( "#yetenekhepsi" ).load(window.location.href + " #yetenekhepsi" );
+            }
+          });
+          return false; //<---- move it here
+        });
+      });
+          </script>
+
+{% endblock slider %}

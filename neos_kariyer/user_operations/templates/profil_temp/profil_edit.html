@@ -1,0 +1,85 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load static %}
+
+
+        <form method="POST" action="." style="max-width:360px;margin:auto;">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Şehir</label>
+                <select name="sehir" class="form-select" aria-label="Default select example">
+                <option selected>Lütfen seçiniz</option>
+                {% for i in konum %}
+                    
+                    <option  value="{{i.id}}">{{i.sehir_ismi}}</option>
+                    
+                {% endfor %}
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="email">Uzmanlık alanınız</label>
+                <select name="kategori" class="form-select" aria-label="Default select example">
+                <option selected>Lütfen seçiniz</option>
+                {% for i in kategori %}
+                    
+                    <option value="{{i.id}}">{{i.kategory_ismi}}</option>
+                    
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <label for="">Alanınızda kaç yıl deneyimlisiniz?</label>
+            {% for i in tecrubem %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="r" value="{{i.id}}" id="r1">
+                <label class="form-check-label" for="r1">
+                    {{i.tecrube}}
+                </label>
+            </div>
+           {% endfor %}
+
+            <br>
+            <label for="">Alacağınız projelere haftada kaç saat zaman ayırabilirsiniz?</label>
+            {% for i in saat %}
+            
+            
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="{{i.id}}" name="t" id="t1">
+                <label class="form-check-label" for="t1">
+                    {{i.calisma_saat}}
+                </label>
+            </div>
+            {% endfor %} <br>
+            <label for="">Şu Anda Aktif Çalışma Durumunuz?</label>
+            {% for i in calisma_durumum %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="{{i.id}}" name="work" id="w2">
+                <label class="form-check-label" for="t1">
+                    {{i.calisma_durumu}}
+                </label>
+            </div>
+            {% endfor %} <br>
+            <label for="">Sitede Aktif Olarak Ne Şekilde Çalışmak İstersiniz?</label>
+            {% for i in arayis %}
+            
+            
+            <div class="form-check">
+                <input class="form-check-input" type="radio" value="{{i.id}}" name="is" id="w2">
+                <label class="form-check-label" for="t1">
+                    {{i.calisma_beklentisi}}
+                </label>
+            </div>
+            {% endfor %}
+            <br>
+            <label for="w3review">Kartvizit Bilginiz:</label>
+
+            <textarea id="w3review" name="w3review" rows="4" cols="50">
+            
+            </textarea>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            
+        </form>
+  
+{% endblock slider %}

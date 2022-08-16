@@ -1,0 +1,312 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block slider %}
+<div class="container-lg">
+
+    <div class="row">
+        <div class="col-12">
+
+            <!--sıralama-->
+            <div class="row">
+                <div class="col">
+                    <select class="form-select  form-select" id="kategori">
+                        <option selected>Hepsi</option>
+                        <option value="1">Okunmamış</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="neos yazılım" aria-label="ara"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Ara</button>
+                    </div>
+                </div>
+            </div>
+            {% if ilanlarim %}
+            <h6> Size gelen fırsatları görüntülüyorsunuz
+            </h6> 
+            {% else %}
+            {% endif %}
+            {% for i in ilanlarim %}
+                {% for j in aldigin_ilan_teklifleri %}
+                    {% if i.id == j.ads_ofer_id  %}
+                    
+                       
+                                {% if j.read_status %}
+                                <div class="alert alert-dark" role="alert">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td>{{j.offer_user}} İlanınıza teklif gönderdi</td>
+                                            <td style="text-align:right"><button  type="button" data-bs-toggle="modal" data-bs-target="#a{{j.id}}" class="btn btn-secondary">Görüntüle</button></td>
+                                        </tr>
+                                    </table>
+                    
+                                </div>
+                                {% else %}
+                                <div class="alert alert-success" role="alert">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td><b>{{j.offer_user}} İlanınıza Teklif Gönderdi</b> </td>
+                                            <td style="text-align:right"><button  type="button" data-bs-toggle="modal" data-bs-target="#a{{j.id}}"  class="btn btn-success">Görüntüle</button></td>
+                                        </tr>
+                                    </table>
+                    
+                                </div>
+                                {% endif %}
+
+                                        
+                                    
+                    {% else %}
+                    
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <!--**sıralama**-->
+            
+            {% for i in alinan_uzman_teklifleri %}<h6> Size gelen fırsatları görüntülüyorsunuz
+            </h6>
+            {% for j in kullanici %}
+                {% if i.offer_user_id == j.id %}
+
+                        {% if i.read_status %}
+                        
+                        <div class="alert alert-dark" role="alert">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>{{i.offer_user}} Firması senden teklif istiyor</td>
+                                    <td style="text-align:right"><button class="btn btn-secondary">Görüntüle</button></td>
+                                </tr>
+                            </table>
+            
+                        </div>
+                        {% else %}
+                        <div class="alert alert-success" role="alert">
+                            <table style="width:100%">
+                                <tr>
+                                    <td><b>{{i.offer_user}} Firması sana mesaj gönderdi</b> </td>
+                                    <td style="text-align:right"><button class="btn btn-success">Görüntüle</button></td>
+                                </tr>
+                            </table>
+            
+                        </div>
+                        {% endif %}
+
+                                    
+                                    
+                               
+                {% else %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+            {% for i in bana_gelen_istekler %}
+            <h4>Sizden İstenen İlan Teklifleri</h4>
+            {% for k in articles %}
+            {% if i.ads_ofer_id == k.id %}
+            <div class="alert alert-success" role="alert">
+                <table style="width:100%">
+                    <tr>
+                        <td><b>{{k.ilan_basligi}} İlanı İçin Sizden Teklif İstenmektedir</b> </td>
+                        <td style="text-align:right"><a href="/views/adsshow/{{k.id}}"><button type="button"  class="btn btn-success">Görüntüle</button></a></td>
+                    </tr>
+                </table>
+
+            </div>
+            {% else %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+            <hr>
+            {% for i in bana_gelen_calisma_teklifleri %}
+            
+            <h4>Sizinle Çalışmak İsteyen Şirketler</h4>
+            {% for k in sirketler %}
+            {% if i.offer_user_id == k.id %}
+            
+            
+
+            <div class="alert alert-success" role="alert">
+                <table style="width:100%">
+                    <tr>
+                        <td><b>{{k.company_name}} Sizinle Çalışmak İster</b> </td>
+                        <td style="text-align:right"><a href="/profile/companyshow/{{k.id}}"><button type="button"  class="btn btn-success">Görüntüle</button></a></td>
+                    </tr>
+                </table>
+
+            </div>
+            {% else %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="container-lg">
+
+    <div class="row">
+
+        <div class="col-12">
+            <!--sıralama-->
+            <div class="row">
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    
+                </div>
+            </div>
+            <!--**sıralama**-->
+            
+            <!--**ilanlar**-->
+            
+        </div>
+    </div>
+</div>
+
+{% for i in ilanlarim %} 
+{% for j in aldigin_ilan_teklifleri %}
+
+<div class="modal fade" id="a{{j.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="color: black;" id="exampleModalLabel">Teklif Durumu </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        
+        
+                    
+        <div class="card">
+            <h6 class="card-header">{{i.ilan_basligi}}
+                {% if j.veto_status %}
+                <p  style=" color: red; float:right" >Red Edildi</p>
+                {% else %}
+                    {% if j.acceptance_status %}
+                
+                        <p style="float:right; color: green;" >Onaylandı</p>
+                    {% else %}
+                        <p style="float:right; color: green;" >Açık</p>
+                    {% endif %}
+                {% endif %}
+            </h6>
+            <div class="card-body py-1">
+                <div class="row">
+                    {% if i.İlan_gorseli %}
+                        <div class="col-12 col-lg-2 text-center"><img src="{{i.İlan_gorseli.url}}" class="kategori-img">
+                    {% else %}
+                    
+                        <div class="col-12 col-lg-2 text-center"><img src="{% static 'images/dijital.png' %}" class="kategori-img">
+                    {% endif %}
+                    </div>
+                    <div class="col-12 col-lg-10">
+                        <p class="card-text">
+                            {{i.kisa_ilan_aciklamasi}}
+                        </p>
+                        <small class="card-text"><span class="detay">Verilen Teklif Miktarı :{{j.offer_amount}} ₺  
+                        </small> <br>
+                        <small class="card-text"><span class="detay">En düşük teklif: <b>{{j.chip_amunt}} ₺</b> | Senin
+                                
+                            </span>
+                        </small>
+                        {% if j.acceptance_status %}
+            
+                            <p style="float:right; color: green;" >Onaylandın</p>
+                        {% else %}
+                            <a href="/views/deletet/{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-primary">Sil</a>
+                            {% if j.veto_status %}
+                            
+                            {% else %}
+                                <a href="/views/vetot/{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-danger">Reddet</a>
+                                <a href="/views/onaylat/{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-success">Onayla</a>
+                            {% endif %}
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+       
+      
+    </div>
+  </div>
+
+{% endfor %}
+{% endfor %}
+
+
+{% for i in articles %} 
+{% for j in bana_gelen_istekler %}
+
+<div class="modal fade" id="b{{j.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="color: black;" id="exampleModalLabel">Teklif Durumu </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        
+        
+                    
+        <div class="card">
+            <h6 class="card-header">{{i.ilan_basligi}}
+                {% if j.veto_status %}
+                <p  style=" color: red; float:right" >Red Edildi</p>
+                {% else %}
+                    {% if j.acceptance_status %}
+                
+                        <p style="float:right; color: green;" >Onaylandı</p>
+                    {% else %}
+                        <p style="float:right; color: green;" >Açık</p>
+                    {% endif %}
+                {% endif %}
+            </h6>
+            <div class="card-body py-1">
+                <div class="row">
+                    {% if i.İlan_gorseli %}
+                        <div class="col-12 col-lg-2 text-center"><img src="{{i.İlan_gorseli.url}}" class="kategori-img">
+                    {% else %}
+                    
+                        <div class="col-12 col-lg-2 text-center"><img src="{% static 'images/dijital.png' %}" class="kategori-img">
+                    {% endif %}
+                    </div>
+                    <div class="col-12 col-lg-10">
+                        <p class="card-text">
+                            {{i.kisa_ilan_aciklamasi}}
+                        </p>
+                        <small class="card-text"><span class="detay">Verilen Teklif Miktarı :{{j.offer_amount}} ₺  
+                        </small> <br>
+                        <small class="card-text"><span class="detay">En düşük teklif: <b>{{j.chip_amunt}} ₺</b> | Senin
+                                
+                            </span>
+                        </small>
+                        {% if j.acceptance_status %}
+            
+                            <p style="float:right; color: green;" >Onaylandın</p>
+                        {% else %}
+                            <a href="/views/deletet/{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-primary">Sil</a>
+                            {% if j.veto_status %}
+                            
+                            {% else %}
+                                <a href="/views/vetot/{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-danger">Reddet</a>
+                                <a href="/views/onaylat/{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-success">Onayla</a>
+                            {% endif %}
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+       
+      
+    </div>
+  </div>
+
+{% endfor %}
+{% endfor %}
+{% endblock slider %}
+

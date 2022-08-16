@@ -1,0 +1,46 @@
+
+{% extends "homebase.html" %}
+{% block head %}
+{% include "head.html" %}
+{% endblock head %}
+
+{% block slider %}
+{% load static %}
+<style>
+    label{
+        width: 200px;
+    }
+
+    .hero-image{
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("{% static 'images/hero.jpg' %}");
+    }
+
+</style>
+<div class="hero-image">
+    <div class="hero-text-form text-center">
+        <h5>Üyelik Tipi Seçiniz</h5>
+        <div class="row" style="color:#004aad;">
+            <div class="col-1"></div>
+            <a class="col-4 uyeliktipi" href="/user/membership/1">
+            <div >
+                <h4 style="color:#004aad;">Hizmet Veren</h4>
+                <small class="text-muted">İlanlara başvurmak istiyorum</small>
+            </div></a>
+            <div class="col-2"> <img src="{% static 'images/logo.png' %}" alt="yapbikariyer logo"
+                    style="width:100%;margin-top:85px;">
+            </div>
+            <a class="col-4 uyeliktipi" href="/user/membership/0">
+            <div >
+                <h4 style="color:#004aad;">Hizmet Alan</h4>
+                <small class="text-muted">İlan yayınlamak istiyorum</small>
+            </div></a>
+            <div class="col-1"></div>
+        </div>
+        <h6>Üyelik tipini sonradan değiştirebilirsiniz</h6>
+    </div>
+</div>
+<!--**hero image-->
+
+{% endblock slider %}
+{% include "scripts.html" %}

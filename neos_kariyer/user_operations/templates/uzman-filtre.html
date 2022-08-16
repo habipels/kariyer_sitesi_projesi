@@ -1,0 +1,58 @@
+
+<label for="kategori" class="form-label">Aradığınız uzmanlık</label>
+<select class="form-select" name="kategori" id="kategori">
+    <option value="Tümü" >Tümü</option>
+        <option value="{{secim_kategori}}" selected>{{secim_kategori}}</option>
+
+    {% for i in kategori %}
+    {% if i.kategory_ismi == secim_kategori %}
+    
+    {% else %}
+        <option value="{{i.kategory_ismi}}">{{i.kategory_ismi}}</option>
+    {% endif %}
+        
+    {% endfor %}
+</select>
+
+<br>
+
+<label for="kategori" class="form-label">Lokasyon</label>
+<select class="form-select" name="lokasyon" id="kategori">
+    <option value="Tümü" >Tümü</option>
+    <option value="{{secim_sehir}}" selected>{{secim_sehir}}</option>
+    {% for i in lokal %}
+    {% if secim_sehir  ==  i.sehir_ismi %}
+    
+    {% else %}
+    <option value="{{i.sehir_ismi}}">{{i.sehir_ismi}}</option>
+    {% endif %}
+        
+    {% endfor %}
+</select>
+
+<br>
+
+<label class="form-label">Uzmanın deneyim seviyesi</label><br>
+
+<select class="form-select" name="deneyim" id="deneyimler">
+    <option value="Tümü" >Tümü</option>
+    <option value="{{secim_deneyim}}" selected>{{secim_deneyim}}</option>
+    {% for i in deneyimler %}
+    {% if secim_deneyim == i.tecrube %}
+    
+    {% else %}
+    <option value="{{i.tecrube}}">{{i.tecrube}}</option>
+    {% endif %}
+        
+    {% endfor %}
+</select>
+
+<br>
+
+
+<!--Eğer giriş/kayıt yapılmadıysa uyelik1.php sayfasına yönlendirir. Eğer giriş yapıldıysa kişiye uygun ilanlar gösterilir-->
+<a href="/views/allexpert/" title="İlan yayınlarsanız uzmanlar sizi bulur"><small id="emailHelp"
+        class="form-text text-muted">İlan yayınla</small></a>
+<br><a href="" title="İlan yayınlarsanız uzmanlar sizi bulur"><small id="emailHelp"
+    class="form-text text-muted">Filtreyi Sıfırla</small></a><br>
+    <button class="btn btn-success w-100" type="submit">ARA</button>

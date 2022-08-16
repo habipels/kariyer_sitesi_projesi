@@ -1,0 +1,71 @@
+{% extends "homebase.html" %}
+
+{% block slider %}
+<!--content-->
+<div class="container-lg">
+
+    <div class="row">
+
+        <div class="col-12">
+            <!--sıralama-->
+            <div class="row">
+                <div class="col">
+                    <select class="form-select  form-select" id="kategori">
+                        <option selected>Hepsi</option>
+                        <option value="1">Yalnızca aktif ilanlarım</option>
+                        <option value="2">Yalnızca kapalı ilanlarım</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="neos yazılım" aria-label="ara"
+                            aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Ara</button>
+                    </div>
+                </div>
+            </div>
+            <!--**sıralama**-->
+            <h5>Oluşturduğunuz ilanlar</h5>
+            <hr>
+            <a class = "btn btn-success" href = "{% url 'ads:add_ads' %}">İlan Ekle </a>
+            <hr>
+            {% if articles %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Başlık</th>
+                        <th scope="col">Teklif sayısı</th>
+                        <th scope="col">En düşük teklif</th>
+                        <th scope="col">Kalan süre</th>
+                        <th scope="col">Yayın tarihi</th>
+                        <th scope="col">Güncelle</th>
+                        <th scope="col">Sil</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for article in articles %}
+                    <tr class="table-success" onclick="window.location='/ads/views/{{article.id}}';">
+                        <th scope="row">{{article.ilan_basligi}}</th>
+                        <td>{{article.offer_much}}</td>
+                        <td>{{article.chip_amunt}}₺/ay</td>
+                        <td>{{article.ilan_olusturma_tarihi}}</td>
+                        <td>{{article.ilan_gecis_tablosu}}</td>
+                        <td><a href="{% url 'ads:ads_update' article.id %}" class = "btn btn-danger">Güncelle</a></td>
+                        <td><a href="{% url 'ads:ads_delete' article.id %}" class = "btn btn-danger">Sil</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class = "alert alert-danger">
+    Henüz bir İlan Eklenmemiş
+
+</div>
+{% endif %}
+{% endblock slider %}
+

@@ -1,0 +1,134 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load static %}
+<style>
+    .hero-image{
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("{% static 'images/hero.jpg' %}");
+    }
+</style>
+<div class="hero-image" >
+    <div class="hero-text">
+        <h1 style="font-size: 50px">
+            Fikirlerin Yeteneklerle Buluştuğu Platform
+        </h1>
+        <p>Projeniz için uzmanlar bulun veya projelere başvurun</p>
+        <button type="button" class="btn btn-lg btn-outline-light">
+            Uzmanlar
+        </button>
+        <button type="button" class="btn btn-lg btn-outline-light">
+            İlanlar
+        </button>
+    </div>
+</div>
+<!--**hero image-->
+
+<!--content-->
+<div class="container">
+    <div class="row gx-5">
+        <!--sol yatay kartlar-->
+        <div class="col-md-8 col-12">
+            <div class="card">
+                <h5 class="card-header">Front end web geliştirici</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4 col-lg-2"><img src="{% static 'images/ilan-avatar.png' %}" style="width:100%"></div>
+                        <div class="col-8 col-lg-10">
+                            <p class="card-text">
+                                Projemizin tasarımını ve front end kodlamasını yapmak üzere
+                                takım arkadaşı arıyoruz
+                            </p>
+                            <small class="card-text">Bütçe: 300-600 TL | Kategori: Web Geliştirme | Proje
+                                Kapsamı:
+                                Geniş <br />
+                                Aranan Nitelikler: HTML, CSS, JS</small>
+                            <a href="#" class="btn btn-sm btn-outline-success apply-button">Başvur</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header">Front end web geliştirici</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4 col-lg-2"><img src="{% static 'images/ilan-avatar.png' %}" style="width:100%"></div>
+                        <div class="col-8 col-lg-10">
+                            <p class="card-text">
+                                Projemizin tasarımını ve front end kodlamasını yapmak üzere
+                                takım arkadaşı arıyoruz
+                            </p>
+                            <small class="card-text">Bütçe: 300-600 TL | Kategori: Web Geliştirme | Proje
+                                Kapsamı:
+                                Geniş <br />
+                                Aranan Nitelikler: HTML, CSS, JS</small>
+                            <a href="#" class="btn btn-sm btn-outline-success apply-button">Başvur</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header">Front end web geliştirici</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4 col-lg-2"><img src="{% static 'images/ilan-avatar.png' %}" style="width:100%"></div>
+                        <div class="col-8 col-lg-10">
+                            <p class="card-text">
+                                Projemizin tasarımını ve front end kodlamasını yapmak üzere
+                                takım arkadaşı arıyoruz
+                            </p>
+                            <small class="card-text">Bütçe: 300-600 TL | Kategori: Web Geliştirme | Proje
+                                Kapsamı:
+                                Geniş <br />
+                                Aranan Nitelikler: HTML, CSS, JS</small>
+                            <a href="#" class="btn btn-sm btn-outline-success apply-button">Başvur</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--**sol yatay kartlar**-->
+
+        <!--sağ dikey kartlar-->
+        <div class="col-md-4 col-12 vertical-card-div p-3">
+            <h3><img src="{% static 'images/hot.png' %}" style="width:40px"> En Yeniler </h3>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Logo tasarımcısı</h5>
+                    <p class="card-text">
+                        Projemizin tasarımını ve front end kodlamasını yapmak üzere
+                        takım arkadaşı arıyoruz
+                    </p>
+                    <small class="card-text">Bütçe: 300-600 TL <br />
+                        Kategori: Web Geliştirme <br />
+                        Proje Kapsamı: Geniş<br />Aranan Nitelikler: HTML, CSS,
+                        JS</small>
+                    <div class="d-grid gap-2">
+                        <br />
+                        <button class="btn btn-success" type="button">Başvur</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Logo tasarımcısı</h5>
+                    <p class="card-text">
+                        Projemizin tasarımını ve front end kodlamasını yapmak üzere
+                        takım arkadaşı arıyoruz
+                    </p>
+                    <small class="card-text">Bütçe: 300-600 TL <br />
+                        Kategori: Web Geliştirme <br />
+                        Proje Kapsamı: Geniş<br />Aranan Nitelikler: HTML, CSS,
+                        JS</small>
+                    <div class="d-grid gap-2">
+                        <br />
+                        <button class="btn btn-success" type="button">Başvur</button>
+                    </div>
+                </div>
+            </div>
+            <!--**sağ dikey kartlar**-->
+        </div>
+    </div>
+</div>{% endblock slider %}
+{% include "scripts.html" %}

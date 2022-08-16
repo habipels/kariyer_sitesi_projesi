@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iyzico Django</title>
+</head>
+<body>
+
+
+<div class="container">
+    <div class="row" style="margin: 4rem;">
+
+        {{ message }}
+
+    </div>
+</div>
+<div class="container">
+    <div class="row" style="margin: 4rem;">
+    <p>Paketler</p>
+{% for i in paketler %}
+    
+    
+<button> <a href="{%  url 'pay:payment' i.id %}"> {{i.paket_basligi}}</a> </button>
+{% endfor %}
+    </div>
+</div>
+
+
+</body>
+</html>

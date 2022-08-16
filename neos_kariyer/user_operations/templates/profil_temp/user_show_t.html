@@ -1,0 +1,482 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load static %}
+{% for i in bilgi %}
+{% if i.background %}
+<style>
+  .hero-image-short{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  url("{{i.background.url}}");
+  }
+</style>
+{% else %}
+
+<style>
+  .hero-image-short{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  url("{% static 'images/hero.jpg' %}");
+  }
+</style>
+{% endif %}
+{% endfor %}
+
+<div class="hero-image-short">
+  
+  <div class="modal fade" id="profimg" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Profil Arkaplan Seçimi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+          {{back_form}}
+          <div class="text-center">
+            {% for i in bilgi %}
+          {% if i.background %}
+          <img style="width: 200px;" src="{{i.background.url}}" alt="profil resmi">
+          {% else %}
+
+          <img class="rounded-circle" src="{% static 'images/hero.jpg' %}" alt="arkaplan resmi">
+          {% endif %}
+          {% endfor %}
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+          <button type="submit" class="btn btn-primary">Kayıt Et</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>    
+    {% for i in bilgi %}
+    <div class="hero-text-avatar" >
+      
+    {% if i.profil_img %}
+    <img style="width:200px;height:200px;object-fit: cover;"  src="{{i.profil_img.url}}"  class="rounded-circle"  alt="profil resmi">
+    {% else %}
+        <img style="width:200px;height:200px;object-fit: cover;"  class="rounded-circle" src="{% static 'images/ilan-avatar.png' %}" alt="profil resmi">
+        
+    {% endif %}
+    
+    <br>
+    
+    </div>
+    
+    <div class="hero-text-profil text-center">
+        <!--Eğer giriş/kayıt yapılmadıysa bu buton gösterilir-->
+        
+        <h4>{{i.isim_soyisim}}</h4>
+        <hr style="margin: 0;">
+        <b>{{i.user_kategori}}</b>
+        
+        <!--****-->
+    </div>
+    {% endfor %}
+    <div class="hero-text-right text-center">
+        <b><a href="#"> Toplam {{toplam}} Değerlendirme</a></b><br>
+        <b>{{toplam_puan}}</b>
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+    </div>
+</div>
+<!--content-->
+<div class="container-lg">
+
+    <div class="row">
+        <!--filtre-->
+        <div class="col-lg-4 col-md-5 col-12">
+
+            <div class="vertical-card-div profil-biyo">
+                <!--kendi profiliyse gösterilir-->
+                
+                <!--****-->
+                <div class=" biyo">
+                 
+                    {% for i in bilgi %}
+                    {% for j in is_bilgisi %}
+                    <i>
+                        <p><b>{{i.user_kategori}}</b> alanında <b>{{j.deneyim}}</b> deneyimliyim. Şu anda <b> {{j.calisma_durumu}}
+                                </b>. <b>{{i.user_kategori}}</b> Alanında işler yapmak istiyorum {{j.is_b}}
+                            almak istiyorum.</p>
+
+                    </i>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+                {% for i in bilgi %}
+                {% for j in is_bilgisi %}
+                
+                
+                <div class="kisisel-bilgiler">
+                    <div><img src="{% static 'images/ikonlar/1.png' %}"><small>{{i.lokasyon}} Konumuda </small>
+
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/7.png' %}"><small>{{j.deneyim}} deneyimli</small>
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/8.png' %}" alt="lokasyon"><small>{{j.calisma}}
+                            istiyor</small>
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/5.png' %}" alt="Kayıt Tarihi"><small>{{i.create_at}}
+                    </small>
+                    </div>
+                    <br>
+                    <hr>
+                    {% if request.user.is_authenticated %}
+                    {% if ac %}
+                    
+                    
+                    <div><img src="{% static 'images/ikonlar/13.png' %}" alt="Telefon"><small>{{i.isim_soyisim}}
+                    </small>
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/3.png' %}" alt="Telefon"><small><a href="tel:+9{{i.telefon}}" style="color: black;">{{i.telefon}}</a>
+                    </small>
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/2.png' %}" alt="Telefon"><small><a href="mailto:{{i.email}}" style="color: black;" >{{i.email}}</a>
+                    </small>
+                    </div>
+                    {% if request.user.is_authenticated %}
+                    {% if degerlendirme_durumu %}
+                      <button type="button" style="background-color: rgb(51, 168, 51); color: white;" class="btn btn" data-bs-target="#sil_duzenle" data-bs-toggle="modal" >Değerlendirmeyi Düzenle</button>
+                    {% else %}
+                      <button type="button" style="background-color: rgb(51, 168, 51); color: white;" class="btn btn" data-bs-target="#degerlendir" data-bs-toggle="modal" >Kullanıcıyı Değerlendir</button>
+                    {% endif %}
+                            {% if ilan_yapma %}
+                            
+                            {% else %}
+                            <button type="button" style="background-color: rgb(51, 168, 51); color: white;" class="btn btn" data-bs-target="#teklif" data-bs-toggle="modal" >Teklif Ver</button>
+                            
+                            <button type="button" style="background-color: rgb(51, 168, 51); color: white;" class="btn btn" data-bs-target="#ilan_davet" data-bs-toggle="modal" >İlana Davet Et</button>
+                            {% endif %}
+                    
+                    {% else %}
+                    {% endif %}
+                    
+                    {% else %}
+                      <a href="{% url 'profile:profilac' i.id %}"><button type="button" style="background-color: rgb(51, 168, 51); color: white;" class="btn btn" data-bs-dismiss="modal" >Profili Aç</button></a>
+                      
+                    {% endif %}
+                    {% else %}
+                      
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% endfor %}
+                <br>
+            </div>
+        </div>
+        <!--**filtre**-->
+        <div class="col-lg-8 col-md-7 col-12">
+        
+  
+<button class="tablink default" onclick="openPage('Home', this, '#f0f0f0')">Özgeçmiş</button>
+<button class="tablink" onclick="openPage('News', this, '#f0f0f0')" >Yetenekler</button>
+<button class="tablink" onclick="openPage('Contact', this, '#f0f0f0')">Portfolyo</button>
+
+
+
+<div id="default" class="tabc">
+  {% if bilgiler %}
+              <!-- The Timeline -->
+              <!-- Modal -->
+  
+    <ul class="timeline">
+  
+      <!-- Item 1 -->
+      {% for i in bilgiler %}
+      <li>
+          <div class="direction-{{i.yon}}">
+              <div class="flag-wrapper">
+                  <span class="flag">{{i.baslik}}</span>
+                  <span class="time-wrapper"><span class="time">{{i.tarih}}</span></span>
+              </div>
+              <div class="desc">{{i.aciklama}}</div>
+          </div>
+      </li>
+      {% endfor %}
+  </ul>
+  
+  <!--**ilanlar**-->
+  {% else %}
+  <p>Öz Geçmiş Eklenmemiş</p>
+  <!-- The Timeline -->
+  <!-- Modal -->
+  
+    
+  {% endif %}
+  </div>
+
+  
+
+
+<div id="Home" class="tabcontent">
+{% if bilgiler %}
+            <!-- The Timeline -->
+            <!-- Modal -->
+
+  <ul class="timeline">
+
+    <!-- Item 1 -->
+    {% for i in bilgiler %}
+    <li>
+        <div class="direction-{{i.yon}}">
+            <div class="flag-wrapper">
+                <span class="flag">{{i.baslik}}</span>
+                <span class="time-wrapper"><span class="time">{{i.tarih}}</span></span>
+            </div>
+            <div class="desc">{{i.aciklama}}</div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+<!--**ilanlar**-->
+{% else %}
+<p>Öz Geçmiş Eklenmemiş</p>
+<!-- The Timeline -->
+<!-- Modal -->
+
+  
+{% endif %}
+</div>
+
+<div id="News" class="tabcontent">
+  <h3>Yeteneklerim</h3>
+  {% for i in yeteneklerim %}
+  <p><b>{{i.yetenek_dil}}</b> {{i.deneyimler}}</p> 
+  {% endfor %}
+</div>
+
+<div id="Contact" class="tabcontent">
+  <h3>Portfolyo</h3>
+  {% for i in bilgi %}
+  <p>{{i.company_about|safe}}</p>
+  {% endfor %}
+</div>
+            
+        </div>
+        
+    </div>
+</div>
+
+<script>
+  $(".default").css("background-color", "#f0f0f0");
+  $(".default").css("color", "black");
+  $(".tablink").click(function(){
+    $("#default").css("display", "none");
+    $(".default").css("background-color", "#004aad");
+  })
+  $(".default").click(function(){
+    $(".default").css("background-color", "#f0f0f0");
+  })
+var myModal = document.getElementById('myModal')
+var myInput = document.getElementById('myInput')
+
+myModal.addEventListener('shown.bs.modal', function () {
+  myInput.focus()
+})
+
+function openPage(pageName,elmnt,color) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.backgroundColor = "";
+ 
+  }
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].style.color = "";
+    }
+  document.getElementById(pageName).style.display = "block";
+  elmnt.style.backgroundColor = color;
+  document.getElementById(pageName).style.display = "block";
+  elmnt.style.color = "black";
+
+  
+}
+
+</script>
+<div class="modal fade" id="teklif" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Kullanıcıya Teklif Ver</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form  method="POST">
+        {% csrf_token %}
+        <div class="text-center">
+        <label for="teklifleri">Teklif Miktari : <input type="number" name="teklifleri" placeholder="Teklif Miktarı"></label>
+        
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+          <button type="submit" class="btn btn-primary">Kayıt Et</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>  
+<div class="modal fade" id="ilan_davet" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">İlana Teklif Vermesi İçin Çağır</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      {% if ilanlarim %}
+      <table class="table">
+          <thead>
+              <tr>
+                  <th scope="col">Başlık</th>
+                  <th scope="col">Teklif sayısı</th>
+                  <th scope="col">En düşük teklif</th>
+                  
+
+              </tr>
+          </thead>
+          <tbody>
+              
+              {% for article in ilanlarim %}
+              {% for i in bilgi %}
+              {% for k in davetlerim %}
+              {% if article.id == k.ads_ofer_id %}
+                
+                  
+                    <tr class="table-secondary" >
+                  <th scope="row">{{article.ilan_basligi}}</th>
+                  <td>{{article.offer_much}}</td>
+                  <td>{{article.chip_amunt}}₺/ay</td>
+                </tr>
+                  
+                {% else %}
+                
+                {% endif %}
+                
+                
+                
+              {% endfor %}
+              <tr class="table-success" onclick="window.location='/views/ilandavet/{{article.id}}/{{i.id}}';">
+                <th scope="row">{{article.ilan_basligi}}</th>
+                <td>{{article.offer_much}}</td>
+                <td>{{article.chip_amunt}}₺/ay</td>
+              </tr>
+              {% endfor %}
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+</div>
+</div>
+{% else %}
+<div class = "alert alert-danger">
+Henüz bir İlan Eklenmemiş
+
+</div>
+{% endif %}
+      </div>
+        
+      
+    </div>
+  </div>
+</div>  
+<div class="modal fade" id="degerlendir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Kullancııyı Onayla</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form  method="POST">
+        {% csrf_token %}
+        <div class="text-center">
+          <div class="row">
+            <div class="col">
+              <label for="vehicle1">1 Puan</label><br>
+              <input type="radio" id="vehicle1" name="vehicle1" value="1">
+            </div>
+            <div class="col">
+              <label for="vehicle1">2 Puan</label><br>
+              <input type="radio" id="vehicle1" name="vehicle1" value="2">
+            </div>
+            <div class="col">
+              <label for="vehicle1">3 Puan</label><br>
+              <input type="radio" id="vehicle1" name="vehicle1" value="3">
+            </div>
+            <div class="col">
+              <label for="vehicle1">4 Puan</label><br>
+              <input type="radio" id="vehicle1" name="vehicle1" value="4">
+            </div>
+            <div class="col">
+              <label for="vehicle1">5 Puan</label><br>
+              <input type="radio" id="vehicle1" name="vehicle1" value="5">
+            </div>
+          </div>
+
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+          <button type="submit" class="btn btn-primary">Oy Ver</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>  
+<div class="modal fade" id="sil_duzenle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Kullancııyı Onayla</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form  method="POST">
+        {% csrf_token %}
+        <div class="text-center">
+          <div class="row">
+            <div class="col">
+              <label for="vehicle1">1 Puan</label><br>
+              <input type="radio" id="vehicle2" name="vehicle2" value="1">
+            </div>
+            <div class="col">
+              <label for="vehicle1">2 Puan</label><br>
+              <input type="radio" id="vehicle2" name="vehicle2" value="2">
+            </div>
+            <div class="col">
+              <label for="vehicle1">3 Puan</label><br>
+              <input type="radio" id="vehicle2" name="vehicle2" value="3">
+            </div>
+            <div class="col">
+              <label for="vehicle1">4 Puan</label><br>
+              <input type="radio" id="vehicle2" name="vehicle2" value="4">
+            </div>
+            <div class="col">
+              <label for="vehicle1">5 Puan</label><br>
+              <input type="radio" id="vehicle2" name="vehicle2" value="5">
+            </div>
+          </div>
+
+      </div>
+        {% for i in degerlendirme_durumu %}
+        <div class="text-center">
+        <p>Verdiğiniz Puan {{i.puan}}</p> 
+        <a style="color: black;" href="/profile/degerlendirme_sil/{{i.id}}">Sil</a>
+      </div>
+        {% endfor %}
+        <br><br><br>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+          <button type="submit" class="btn btn-primary">Düzünle</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>  
+{% endblock slider %}

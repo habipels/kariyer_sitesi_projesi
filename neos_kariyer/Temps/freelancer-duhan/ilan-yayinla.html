@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<?php include("includes/head.php") ?>
+
+<body>
+    <!--navbar-->
+    <?php include("includes/nav.php") ?>
+    <!--**navbar**-->
+
+    <!--content-->
+    <div class="container-lg">
+
+        <form style="max-width:360px;margin:auto">
+            <div class="form-group">
+                <label for="baslik">Başlık</label>
+                <input type="text" class="form-control" id="baslik">
+            </div>
+            <br>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                <label for="floatingTextarea">Açıklama</label>
+            </div>
+            <br>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Kategori</option>
+                <option value="1">Web tasarım</option>
+                <option value="2">Mobil uygulama</option>
+                <option value="3">Three</option>
+            </select>
+            <br>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Lokasyon</option>
+                <option value="1">Farketmez/uzaktan</option>
+                <option value="2">İstanbul</option>
+                <option value="3">Ankara</option>
+            </select>
+            <br>
+            <label class="form-label">Bütçe aralığınız</label><br>
+            <div class="input-group">
+                <span class="input-group-text">min</span>
+                <input type="number" aria-label="First name" class="form-control">
+                <span class="input-group-text">-</span>
+                <input type="number" aria-label="Last name" class="form-control">
+                <span class="input-group-text">max</span>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary" style="float:right;">Devam et</button>
+            <br><br><br>
+        </form>
+    </div>
+
+
+    <!--footer-->
+    <?php include("includes/footer.php");
+    include("includes/scripts.php"); ?>
+    <!--**footer**-->
+</body>
+
+</html>

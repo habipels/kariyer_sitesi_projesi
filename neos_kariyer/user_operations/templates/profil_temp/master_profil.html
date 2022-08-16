@@ -1,0 +1,535 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load static %}
+{% for i in bilgi %}
+{% if i.background %}
+<style>
+  .hero-image-short{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  url("{{i.background.url}}");
+  }
+  .flag:hover{
+    background-color: #ba131e ;
+    text-decoration: line-through 2px black;
+    color:white;
+  }
+</style>
+{% else %}
+<style>
+  .hero-image-short{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  url("{% static 'images/hero.jpg' %}");
+  }
+</style>
+{% endif %}
+{% endfor %}
+<div class="hero-image-short">
+  <p style="float:right"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profimg">Düzenle</button></p>
+  <div class="modal fade" id="profimg" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Profil Arkaplan Seçimi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+          {{back_form}}
+          <div class="text-center">
+            {% for i in bilgi %}
+          {% if i.background %}
+          <img style="width: 200px;" src="{{i.background.url}}" alt="profil resmi">
+          {% else %}
+
+          <img class="rounded-circle" src="{% static 'images/hero.jpg' %}" alt="arkaplan resmi">
+          {% endif %}
+          {% endfor %}
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+          <button type="submit" class="btn btn-primary">Kayıt Et</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>    
+    {% for i in bilgi %}
+    <div class="hero-text-avatar" >
+      
+    {% if i.profil_img %}
+    <img  src="{{i.profil_img.url}}" type="button" data-bs-toggle="modal" data-bs-target="#profilresmi" class="rounded-circle"  alt="profil resmi">
+    {% else %}
+        <img type="button" data-bs-toggle="modal" data-bs-target="#profilresmi" class="rounded-circle" src="{% static 'images/ilan-avatar.png' %}" alt="profil resmi">
+        
+    {% endif %}
+    <div class="modal fade" id="profilresmi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color: black;" id="exampleModalLabel">Profil Resmi Seçimi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" enctype="multipart/form-data" style="color: black;">
+          
+        
+          {% csrf_token %}
+          
+          {{profil_form}}
+        
+          <div class="text-center">
+          {% for i in bilgi %}
+    
+      
+          {% if i.profil_img %}
+          <img style="width: 200px;" src="{{i.profil_img.url}}" class="rounded-circle"  alt="profil resmi">
+          {% else %}
+              <img style="width: 200px;" class="rounded-circle" src="{% static 'images/ilan-avatar.png' %}" alt="profil resmi">
+              
+          {% endif %}
+          {% endfor %}
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+            <button type="submit" class="btn btn-primary">Kayıt Et</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>    
+    <br>
+    
+    </div>
+    
+    <div class="hero-text-profil text-center">
+        <!--Eğer giriş/kayıt yapılmadıysa bu buton gösterilir-->
+        
+        <h5>{{i.isim_soyisim}}</h5>
+        
+        
+        <!--****-->
+    </div>
+    {% endfor %}
+    <div class="hero-text-right text-center">
+        <b><a href="#"> 126 Değerlendirme </a></b><br>
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+        <img src="{% static 'images/fav-sari.png' %}" alt="puan" width="20">
+    </div>
+</div>
+<!--content-->
+<div class="container-lg">
+
+    <div class="row">
+        <!--filtre-->
+        <div class="col-lg-4 col-md-5 col-12">
+
+            <div class="vertical-card-div profil-biyo">
+                <!--kendi profiliyse gösterilir-->
+                <p style="float:right"><a href="{% url 'profile:profiledit' %}"><img src="{% static 'images/edit.png' %}" style="width:19px;"></a></p>
+                <!--****-->
+                <div class=" biyo">
+                    {% for i in bilgi %}
+                    {% for j in is_bilgisi %}
+                    <i>
+                        <p>{{i.user_kategori}} alanında {{j.deneyim}}  deneyimliyim. Şu anda  {{j.calisma_durumu}}
+                               . {{i.user_kategori}} {{j.is_b}}
+                            almak istiyorum.</p>
+
+                    </i>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+                {% for i in bilgi %}
+                {% for j in is_bilgisi %}
+                
+                
+                <div class="kisisel-bilgiler">
+                    <div><img src="{% static 'images/ikonlar/1.png' %}"><small>{{i.lokasyon}} Konumuda </small>
+
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/7.png' %}"><small>{{j.deneyim}} deneyimli</small>
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/8.png' %}" alt="lokasyon"><small>{{j.calisma}}
+                            istiyor</small>
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/5.png' %}" alt="Kayıt Tarihi"><small>{{i.create_at}}
+                    </small>
+                    </div>
+                    <br>
+                    
+                    <hr>
+                    <p style="float:right" type="button" data-bs-toggle="modal" data-bs-target="#kisisel"><img src="{% static 'images/edit.png' %}" style="width:19px;"></p>
+                    <div><img src="{% static 'images/ikonlar/13.png' %}" alt="Telefon"><small>{{i.isim_soyisim}}
+                    </small>
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/3.png' %}" alt="Telefon"><small><a href="tel:+9{{i.telefon}}" style="color: black;">{{i.telefon}}</a><p style="float:right"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tel">Doğrula</button></p>
+                    </small>
+                    </div>
+                    <div><img src="{% static 'images/ikonlar/2.png' %}" alt="Telefon"><small><a href="mailto:{{i.email}}" style="color: black;" >{{i.email}}</a><p style="float:right"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#email">Doğrula</button></p>
+                    </small>
+                    </div>
+                    
+                </div>
+                {% endfor %}
+                {% endfor %}
+
+
+            </div>
+        </div>
+        <!--**filtre**-->
+<div class="col-lg-8 col-md-7 col-12">
+        
+  
+<button class="tablink default" onclick="openPage('Home', this, '#f0f0f0')">Özgeçmiş</button>
+<button class="tablink" onclick="openPage('News', this, '#f0f0f0')" >Yetenekler</button>
+<button class="tablink" onclick="openPage('Contact', this, '#f0f0f0')">Portfolyo</button>
+
+<div id="default" class="tabc">
+  
+  {% if bilgiler %}
+          <p style="float:right"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Düzenle
+            </button></p>
+              <!-- The Timeline -->
+              <!-- Modal -->
+          
+  
+   
+    <ul class="timeline" id = "timeline" >
+  
+      <!-- Item 1 -->
+      
+      {% for i in bilgiler %}
+      
+      <li>
+          <div class="direction-{{i.yon}}">
+              <div class="flag-wrapper">
+                  <a href="/profile/ozgecmis/{{i.id}}" style="color: black; "><span  class="flag" >{{i.baslik}}</span>
+                  <span class="time-wrapper"><span class="time">{{i.tarih}}</span></span></a>
+              </div>
+              <div class="desc">{{i.aciklama}}</div>
+          </div>
+      </li>
+    
+      {% endfor %}
+  
+  </ul>
+  
+  <!--**ilanlar**-->
+  {% else %}
+  <p style="float:right"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Öz Gemiş Ekle
+  </button></p>
+  <!-- The Timeline -->
+  <!-- Modal -->
+     
+  {% endif %}
+  </div>
+<div id="Home" class="tabcontent">
+  
+{% if bilgiler %}
+        <p style="float:right"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Düzenle
+          </button></p>
+            <!-- The Timeline -->
+            <!-- Modal -->
+        
+
+ 
+  <ul class="timeline" id = "timeline" >
+
+    <!-- Item 1 -->
+    
+    {% for i in bilgiler %}
+    
+    <li>
+        <div class="direction-{{i.yon}}">
+            <div class="flag-wrapper">
+                <a href="/profile/ozgecmis/{{i.id}}" style="color: black; "><span  class="flag" >{{i.baslik}}</span>
+                <span class="time-wrapper"><span class="time">{{i.tarih}}</span></span></a>
+            </div>
+            <div class="desc">{{i.aciklama}}</div>
+        </div>
+    </li>
+  
+    {% endfor %}
+
+</ul>
+
+<!--**ilanlar**-->
+{% else %}
+<p style="float:right"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+Öz Gemiş Ekle
+</button></p>
+<!-- The Timeline -->
+<!-- Modal -->
+   
+{% endif %}
+</div>
+
+
+<div id="News" class="tabcontent">
+  <div class="col-12">
+    <h5>YETENEKLER</h5>
+    <hr>
+    <div class="row g-3 align-items-center">
+        <div class="col-4">
+            <form method="POST" action="." >
+                {% csrf_token %}
+            <input type="text" id="yetenek" name="gelen" class="form-control" aria-describedby="yetenek">
+        
+                </div>
+                <div class="col-4">
+                {% csrf_token %}
+                <select class="form-select" id = "secilen" name="yapi">
+                    <option selected>Deneyim süresi seçiniz</option>
+                    {% for i in tecrubee %}
+                    <option value="{{i.id}}">{{i.tecrube}}</option>
+                    {% endfor %}
+                
+                
+            </select>
+        </div>
+        <div class="col-4">
+            <button type="submit" id="yetenekekle" class="btn btn-success w-100">Ekle</button>
+        </div>
+    </form>
+    </div>
+    <br>
+    <div id="yetenekhepsi">
+      {% for i in yetenekleri %}
+    
+    
+    <button type="button" class="btn btn-outline-secondary py-0 yetenekler" id="{{i.id}}"><span class="ekliYetenek">
+            {{i.yetenek_dil}}
+        </span>
+        {{i.deneyimler}}</button>
+    {% endfor %}
+    </div>
+    
+
+</div>
+
+
+            
+        </div>
+        <div id="Contact" class="tabcontent">
+          <p style="float:right" type="button" data-bs-toggle="modal" data-bs-target="#hakkimizda"><img src="{% static 'images/edit.png' %}" style="width:19px;"></p>
+          <h3>Portfolyo</h3>
+          {% for i in bilgi %}
+          <p>{{i.company_about|safe}}</p>
+          {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="kisisel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Kişisel Bİlgileri Düzenle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="." method="POST">
+        {% csrf_token %}
+        <div class="text-center">
+        <label for="isim">İsim Soyisim : <input type="text" name="isim_soyisim" placeholder="isim soyisim"></label>
+        <label for="isim">Telefon Numarası  : <input type="number" name="telefon_numarasi" placeholder="numara" maxlength="11"></label>
+        <label for="isim">E-posta : <input type="email" name="email" placeholder="email"></label>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+          <button type="submit" class="btn btn-primary">Kayıt Et</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="email" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Email Doğrula</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="." method="GET">
+      {% csrf_token %}
+      <div class="modal-body">
+        <label for="baslik">Doğrulama Kodu : <input type="text" name="dogrulaemail"></label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+        <button type="submit" class="btn btn-primary">Doğrula</button>
+      </div>
+  </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="hakkimizda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Kişisel Bİlgileri Düzenle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="."  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.media}}
+         {{form}}
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+          <button type="submit" class="btn btn-primary">Kayıt Et</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Öz Geçmiş</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="." method="POST">
+      {% csrf_token %}
+      <div class="modal-body">
+          <div class="mb-3">
+            <label for="baslik" class="form-label" >Kurum Adı : <input class="form-control" type="text" name="isim"></label>
+              
+          </div>
+          Açıklama : <textarea class="form-control" placeholder="Lütfen Açıklam Ekleyin" id="floatingTextarea2" name="acikla" style="height: 50px" maxlength="50" name="w3review" rows="4" cols="50">
+          </textarea><br>
+
+        <label for="baslik">Tarih : <input class="form-control"  type="date" name="tarih"></label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+        <button type="submit" class="btn btn-primary">Kayıt Et</button>
+      </div>
+  </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+  <div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Öz Geçmiş</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <form action="." method="POST">
+  {% csrf_token %}
+  <div class="modal-body">
+  <label for="baslik">Kurum Adı : <input type="text" name="isim"></label>
+  <label for="baslik">Açıklama : <textarea id="w3review" name="acikla" maxlength="150" name="w3review" rows="4" cols="50">
+  </textarea></label>
+  <label for="baslik">Tarih : <input type="date" name="tarih" ></label>
+  </div>
+  <div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal Et</button>
+  <button type="submit" class="btn btn-primary">Kayıt Et</button>
+  </div>
+  </form>
+  </div>
+  </div>
+  </div> 
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script>
+  $(".default").css("background-color", "#f0f0f0");
+  $(".default").css("color", "black");
+  $(".tablink").click(function(){
+    $("#default").css("display", "none");
+    $(".default").css("background-color", "#004aad");
+  })
+  $(".default").click(function(){
+    $(".default").css("background-color", "#f0f0f0");
+  })
+  var myModal = document.getElementById('myModal')
+  var myInput = document.getElementById('myInput')
+  
+  myModal.addEventListener('shown.bs.modal', function () {
+    myInput.focus()
+  })
+  
+  function openPage(pageName,elmnt,color) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].style.backgroundColor = "";
+   
+    }
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].style.color = "";
+      }
+    document.getElementById(pageName).style.display = "block";
+    elmnt.style.backgroundColor = color;
+    document.getElementById(pageName).style.display = "block";
+    elmnt.style.color = "black";
+  }
+  
+  // Get the element with id="defaultOpen" and click on it
+  document.getElementById("defaultOpen").click();
+  </script>
+    <script>
+    $( function() {
+      $( "#yetenek" ).autocomplete({
+        source: '{% url "profile:yetenek"  %}'
+      });
+    } );
+  </script>
+    <script>
+    $(document).ready(function () {
+  $(".yetenekler").click(function (event) {
+     id = $(this).attr("id"),
+    $.ajax({
+      type: "POST",
+      url: "/profile/yeteneksil/",
+      data: {
+        id: id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      success: function (data) {
+        $( "#yetenekhepsi" ).load(window.location.href + " #yetenekhepsi" );
+      }
+    });
+    return false; //<---- move it here
+  });
+});
+
+$(document).ready(function () {
+  $("#yetenekekle").click(function (event) {
+     dili = $("#yetenek").val(),
+     selectElement = document.querySelector('#secilen'),
+        duzey = selectElement.value,
+    
+    $.ajax({
+      type: "POST",
+      url: "/profile/yetenekekle/",
+      data: {
+        dili: dili,
+        duzey :duzey,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      success: function (data) {
+        $( "#yetenekhepsi" ).load(window.location.href + " #yetenekhepsi" );
+      }
+    });
+    return false; //<---- move it here
+  });
+});
+    </script>
+
+{% endblock slider %}

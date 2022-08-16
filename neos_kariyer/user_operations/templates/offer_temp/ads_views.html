@@ -1,0 +1,356 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load static %}
+<style>
+    .hero-image-short {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("{% static 'images/hero.jpg' %}");
+  height: 30%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.hero-image-short {
+    height: 23%;
+  }
+</style>
+<div class="hero-image-short">
+    <div class="hero-text-left">
+        {% for i in ads %}
+        <h3>{{i.ilan_basligi}}</h3>
+        <hr>
+        <b>{{i.kisa_ilan_aciklamasi}}</b>
+        {% endfor %}
+        
+</div>
+
+<div class="hero-text-right text-center">
+        {% if z %}
+            {% for i in ads %}
+                <a class="nav-link active bg-danger" style="color: white !important;"  aria-current="page" href="{% url 'ads:ads_update' i.id %}">Güncelle</a>
+                <a class="nav-link active bg-danger" style="color: white !important;"  aria-current="page" href="{% url 'ads:ads_delete' i.id  %}">Sİl</a>
+            {% endfor %}
+        {% else %}
+            {% if acik %}
+            
+            
+            {% for i in ads %}
+                <a class="nav-link active bg-danger" style="color: white !important;"  aria-current="page" href="{% url 'profile:company_showw' i.id %}">Profili Gör</a>
+            {% endfor %}
+            {% else %}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+<!--content-->
+<div class="container-lg">
+
+    <div class="row">
+        <div class="col-lg-4 col-md-5 col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Aranan nitelikler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for j in ads_filter %}
+                
+                
+                    <tr>
+                        <th scope="row">Deneyim beklentisi</th>
+                        <td>{{j.aranan_deneyim}} </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Lokasyon</th>
+                        {% if j.lokasyon %}
+                            <td>{{j.lokasyon}}</td>
+                        {% else %}
+                            <td>Uzaktan çalışma</td>
+                        {% endif %}
+                        
+                    </tr>
+                    <tr>
+                        <th scope="row">İlan Kategorisi</th>
+                        {% if j.ilan_calima_saati %}
+                            <td>{{j.ilan_calima_saati}}</td>
+                        {% else %}
+                            <td>Belirtilmemiş</td>
+                        {% endif %}
+                        
+                    </tr>
+                    <tr>
+                        <th scope="row">Ücretlendirme</th>
+                        {% if j.ilan_ucretlendirmesi %}
+                            <td>{{j.ilan_ucretlendirmesi}}</td>
+                        {% else %}
+                            <td>Belirtilmemiş</td>
+                        {% endif %}
+                        
+                    </tr>
+                    
+                    <tr>
+                        <th scope="row">Kalan süre</th>
+                        <td>4 gün</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-8 col-md-7 col-12">
+
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Detaylı açıklama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for i in ads %}
+                            <td scope="row">{{i.ilan|safe}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <div class="input-group mb-3 w-50">
+                                {% if request.user.is_authenticated %}
+                                <form  method="POST">
+                                    {% csrf_token %}
+                                    {% if z %}
+                                    
+                                    {% else %}
+                                        {% if ilan_yapma %}
+                                            <input type="number" class="form-control" placeholder="Teklifiniz"
+                                                aria-describedby="button-addon2" name="teklifmiktari">
+                                                <br>
+                                            <button class="btn btn-outline-success" type="submit"
+                                                id="button-addon2">Gönder</button>
+                                        {% else %}
+                                
+                                        {% endif %}
+                                    {% endif %}
+                                    
+                                </form>
+                                {% else %}
+                                <a href="{% url 'user_operations:login'  %}"><button class="btn btn-outline-success" type="submit"
+                                    id="button-addon2">Giriş Yap</button></a>
+                                {% endif %}
+                            </div>
+                            2 Gün kaldı
+                        </th>
+
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th colspan="6"> Diğer teklifler
+                        </th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr>
+                        {% if acik %}
+                        {% for i in acik %}
+                        
+                        
+                        <td scope="col" type="button" data-bs-toggle="modal" data-bs-target="#a{{i.id}}"><img src="{% static 'images/ilan-avatar.png' %}" style="width:80px;"> 
+                        <br>{{i.offer_amount}}  {% if i.veto_status %}
+                            <p>Teklif Reddildi</p>
+                            {% else %}
+                            {% endif %}</td>
+                            
+                        {% endfor %}
+                        {% else %}
+                        <p style="color:red;">İlana Teklif Verilmedi</p>
+                        {% endif %}
+                    </tr>
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+    </div>
+    <br>
+</div>
+{% if z %}
+{% if acik %}
+{% for j in acik %}                        
+               
+<div class="modal fade" id="a{{j.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color: black;" id="exampleModalLabel">Teklif Durumu </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          
+          
+                      {% for i in ads %} 
+                
+                    {% if i.id == j.ads_ofer_id  %}
+                     {% for k in all_profil %}
+                     {% if k.user_id == j.offer_user_id %}
+                        <div class="card">
+                            <h6 class="card-header">Uzman Adı Soyadı : {{k.isim_soyisim}}
+                                {% if j.veto_status %}
+                                <p  style=" color: red; float:right" >Red Edildi</p>
+                                {% else %}
+                                    {% if j.acceptance_status %}
+                                
+                                        <p style="float:right; color: green;" >Onaylandı</p>
+                                    {% else %}
+                                        <p style="float:right; color: green;" >Açık</p>
+                                    {% endif %}
+                                {% endif %}
+                            </h6>
+                            <div class="card-body py-1">
+                                <div class="row">
+                                    {% if k.profil_img %}
+                                        <a href="{% url 'profile:profileshow' k.id %}"><div  class="col-12 col-lg-4 text-center"><img src="{{k.profil_img.url}}" class="kategori-img"></a>
+                                    {% else %}
+                                    
+                                    <a href="{% url 'profile:profileshow' k.id %}"><div class="col-12 col-lg-4 text-center"><img src="{% static 'images/dijital.png' %}" class="kategori-img"></a>
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-12 col-lg-8">
+                                        <p class="card-text">
+                                            Uzmanın Ön Bilgisi :{{k.on_bilgi}}
+                                        </p>
+                                        <small class="card-text"><span class="detay">Verilen Teklif Miktarı :{{j.offer_amount}} ₺  
+                                        </small> <br>
+                                        
+                                        <br><br>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            {% if j.acceptance_status %}
+                            
+                                            <p style="float:right; color: green;" >Onaylandın</p>
+                                        {% else %}
+                                            <a href="/views/deletet/{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-primary">Sil</a>
+                                            {% if j.veto_status %}
+                                            
+                                            {% else %}
+                                                <a type="button" data-bs-toggle="modal" data-bs-target="#b{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-danger">Reddet</a>
+                                                <a href="/views/onaylat/{{j.id}}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-success">Onayla</a>
+                                            {% endif %}
+                                        {% endif %}
+                          </div>
+                          {% else %}
+                                {% endif %}
+                          {% endfor %}
+                    {% else %}
+                    
+                    {% endif %}
+                {% endfor %}
+            
+          
+        
+        </div>
+         
+        
+      </div>
+    </div>   
+{% endfor %}
+{% else %}
+{% endif %} 
+{% else %}
+{% endif %} 
+
+{% if z %}
+{% if acik %}
+{% for j in acik %}                        
+               
+<div class="modal fade" id="b{{j.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color: black;" id="exampleModalLabel">Teklif Reddetme Sebepi </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <!--href="/views/vetot/{{j.id}}" --->
+          
+          
+                      {% for i in ads %} 
+                
+                    {% if i.id == j.ads_ofer_id  %}
+                     {% for k in all_profil %}
+                     {% if k.user_id == j.offer_user_id %}
+                        <div class="card">
+                            <h6 class="card-header">Uzman Adı Soyadı : {{k.isim_soyisim}}
+                                {% if j.veto_status %}
+                                <p  style=" color: red; float:right" >Red Edildi</p>
+                                {% else %}
+                                    {% if j.acceptance_status %}
+                                
+                                        <p style="float:right; color: green;" >Onaylandı</p>
+                                    {% else %}
+                                        <p style="float:right; color: green;" >Açık</p>
+                                    {% endif %}
+                                {% endif %}
+                            </h6>
+                            <div class="card-body py-1">
+                                <div class="row">
+                                        <form action="/views/vetot/{{j.id}}" method="GET">
+                                            
+                                            <select class="form-select form-select" name="red{{j.id}}" id="kategori" >
+                                                <option value="5" selected>Reddetme Sebebi</option>
+                                                <option value="1">Ücret Yüksek</option>
+                                                <option value="2">Deneyim Yetersiz</option>
+                                                <option value="3">İlandan Vazgectim</option>
+                                                <option value="4">Diğer</option>
+                                            </select>
+                                        
+                                        {% if j.acceptance_status %}
+                            
+                                            <p style="float:right; color: green;" >Onaylandın</p>
+                                        {% else %}
+                                            {% if j.veto_status %}
+                                            
+                                            {% else %}
+                                                <button type="submit" style="margin-left: 5px; width: 200px; " class="btn btn-sm apply-button btn-outline-danger">Reddet</button>
+
+                                            {% endif %}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                          {% else %}
+                                {% endif %}
+                          {% endfor %}
+                    {% else %}
+                    
+                    {% endif %}
+                {% endfor %}
+            
+          
+        
+        </div>
+         
+        
+      </div>
+    </div>   
+{% endfor %}
+{% else %}
+{% endif %} 
+{% else %}
+{% endif %} 
+{% endblock slider %}

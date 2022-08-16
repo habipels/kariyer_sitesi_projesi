@@ -1,0 +1,42 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load static %}
+<style>
+    label{
+        width: 200px;
+    }
+
+    .hero-image{
+        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("{% static 'images/hero.jpg' %}");
+    }
+
+</style>
+<div class="hero-image">
+    <div class="hero-text-form">
+            
+                <form class="text-center"  method="POST">
+                    <h3>Lütfen Kayıt Yapınız</h3>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="k">Kullanıcı Adı </label>{{ form.username }} <br>
+                        <label for="k">E-posta </label>{{ form.email }} <br>
+                        <label for="k">Parola </label>{{ form.password }} <br>
+                        <label for="k">Parolayı Doğrula </label>{{ form.confirm }} <br>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-lg btn-success">
+                        Giriş Yap
+                    </button>
+                </form>
+                
+            
+            
+
+        </div>
+
+
+
+    </div>{% endblock slider %}

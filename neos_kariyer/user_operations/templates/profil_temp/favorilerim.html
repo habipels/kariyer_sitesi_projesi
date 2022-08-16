@@ -1,0 +1,298 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load static %}
+
+
+<style>
+  .hero-image-short{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+  url("{% static 'images/banner_img.jpeg' %}");
+  }
+</style>
+
+<div class="hero-image-short">
+  <div class="hero-text-left">
+      <h3 style="color:black"><b>"İzlem Listem" </b> </h3>
+  </div>
+  <div class="hero-text-right">
+      <!--Eğer giriş/kayıt yapılmadıysa bu buton gösterilir-->
+      {% if request.user.is_authenticated %}
+      {% else %}
+      <a class="btn btn-block" href="{% url 'user_operations:register' %}" style="background-color:#004aad"><b
+              style="color:white;">Kazanmaya
+              başla</b></a>
+      {% endif %}
+      <!--****-->
+  </div>
+</div>
+<!--content-->
+<div class="container-lg">
+
+  <div class="row">
+      <!--filtre-->
+      <div class="col-lg-3 col-md-5 col-12">
+          <div class="vertical-card-div filtre" style="top: 10%;">
+            
+              
+              
+          </div>
+      </div>
+      <!--**filtre**-->
+
+
+      <div class="col-lg-9 col-md-7 col-12">
+          <!--sıralama-->
+          <div class="row">
+              <div class="col">
+                 
+                 
+                  
+                
+                  
+              </div>
+              
+          </div>
+        
+
+          <!--**sıralama**-->
+
+          <!--uzmanlar-->
+          <div class="row justify-content-center">
+            
+            {% for j in uzman2 %}
+            {% for i in uzman %}
+            {% for k in all_users %}
+                {% if  i.id == k.offer_user_id %}
+                
+                
+            {% if i.user_id != request.user.id %}
+            
+            
+            
+              {% if i.user_id == j.user_id %}
+              
+              <div class="col-lg-3 col-6 ">
+                  <div class="card uzman-card">
+                      {% if i.profil_img  %}
+                      <a href="{% url 'profile:profileshow' i.id %}">
+                      <img src="{{i.profil_img.url}}" class="card-img-top" alt="..."></a>
+                      {% else %}
+                      <a href="{% url 'profile:profileshow' i.id %}">
+                      <img src="{% static 'images/hero.jpg' %}" class="card-img-top" alt="..."></a>
+                      {% endif %}
+                      <div class="card-body">
+                          <h6 class="card-title">{{i.user_kategori}}</h6>
+                          <h6 class="card-subtitle text-muted" style="font-size:13px;">{{i.isim_soyisim}}</h6>
+                          <div class="kisisel-bilgiler">
+                              <div style="display:inline;"><img src="{% static 'images/ikonlar/1.png' %}"><small>{{i.lokasyon}}</small>
+                              </div>
+                              <div style="display:inline;margin-left:5px;"><img
+                                      src="{% static 'images/ikonlar/7.png' %}"><small>{{j.deneyim}}
+                                  </small>
+                              </div>
+                          </div>
+                          <p class="card-text uzman-text">{{i.on_bilgi}}<b class="price"></b> | <img src="{% static 'images/fav.png' %}"
+                            class="yetenekler" type="button"  alt="favori" style="max-width:20px;margin-bottom:5px;" id="{{i.id}}"
+                            onmouseover="this.src= {% static 'images/fav-sari.png' %} ;"
+                            onmouseout="this.src= {% static 'images/fav.png' %} ;">
+                          </p>
+                      </div>
+                  </div>
+              </div>
+            {% else %}
+             {% endif %}
+            {% else %}
+              {% endif %}
+             {% else %}
+                {% endif %}
+            {% endfor %}
+            {% endfor %}
+          {% endfor %}
+        
+          <!--**uzmanlar**-->
+      
+
+
+
+  
+  
+
+
+</div>
+<br><br>
+{% if uzman.has_other_pages %}
+
+<nav  aria-label="Page navigation example">
+
+  <ul class="pagination justify-content-center">
+{% if uzman.has_previous %}
+<li class="page-item"><a class="page-link" href="?sayfa={{ uzman.previous_page_number }}">Geri</a></li>
+{% else %}
+<li class="page-item disabled">
+<p class="disabled" ><span class="page-link">Geri</span></p></li>
+{% endif %}
+{% for i in uzman.paginator.page_range %}
+{% if uzman.number == i %}
+<li class="page-item"><a class="page-link"  href="?sayfa={{ i }}"><u>{{ i }}</u></a></li>
+{% else %}
+<li class="page-item"><a class="page-link"  href="?sayfa={{ i }}">{{ i }}</a></li>
+{% endif %}
+{% endfor %}
+{% if uzman.has_next %}
+<li class="page-item"><a class="page-link"  href="?sayfa={{ uzman.next_page_number }}">İleri</a></li>
+
+{% else %}
+<li class="page-item disabled">
+  <p class="disabled"><span class="page-link">İleri</span></p></li>
+
+{% endif %}
+</ul>
+
+</nav>
+
+{% endif %}
+</div>
+
+ <!--ilanlar--><div class="col-lg-8 col-md-7 col-12">
+    {% for i in ads %}
+    {% for k in all_ads %}
+        {% if k.ads_ofer_id == i.id %}
+    {% for j in ads_kategori %}
+    {% if i.id == j.ilan_id %}
+    
+        
+        
+    
+    
+    <div class="card">
+        <h6 class="card-header">{{i.ilan_basligi}}
+        </h6>
+        <div class="card-body py-1">
+            <div class="row">
+                {% if i.İlan_gorseli %}
+                    <div class="col-12 col-lg-2 text-center"><img src="{{i.İlan_gorseli.url}}" class="kategori-img">
+                {% else %}
+                    <div class="col-12 col-lg-2 text-center"><img src="{% static 'images/dijital.png' %}" class="kategori-img">
+                {% endif %}
+                
+                </div>
+                <div class="col-12 col-lg-10">
+                    <p class="card-text">
+                       {{i.kisa_ilan_aciklamasi}}
+                    </p>
+                    <small class="card-text"><span class="detay">{{i.offer_much}} Teklif  | Deneyim: {{j.aranan_deneyim}} | 
+                        İlan Ücretlendirmesi :{{j.ilan_ucretlendirmesi}}| İlan Kategorisi : {{j.ilan_calima_saati}}</span>
+                        {% if ilan_yapma %}
+                    
+                     <b class="price"></b> | <img src="{% static 'images/fav.png' %}"
+                            alt="favori" style="max-width:20px;margin-bottom:5px;" class="yetenekleri" type="button" id ="{{i.id}}"
+                            onmouseover="this.src= {% static 'images/fav-sari.png' %} ;"
+                            onmouseout="this.src= {% static 'images/fav.png' %} ;">
+                            {% else %}
+
+                    {% endif %}
+                    </small>
+                    <a href="{% url 'adsoffer:adsshow' i.id %}" class="btn btn-sm apply-button btn-outline-primary">İncele</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    {% endif %}
+    {% endfor %}
+    {% else %}
+        {% endif %}
+    {% endfor %}
+    {% endfor %}
+    <!--**ilanlar**-->
+</div>
+</div>
+</div>
+
+<!--offcanvas filtre-->
+<nav class="navbar navbar-light bg-light fixed-bottom mycanvas">
+<div class="container-fluid">
+<a class="navbar-brand" href="#">Detaylı arama</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+    aria-controls="offcanvasNavbar">
+    <span><img src="images/filter.png" style="width:40px"></span>
+</button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+    aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+   
+    </div>
+</div>
+</div>
+</nav>
+</div>
+
+
+
+</div>
+<!--offcanvas filtre-->
+<nav class="navbar navbar-light bg-light fixed-bottom mycanvas">
+  <div class="container-fluid">
+      <a class="navbar-brand" href="#">Detaylı arama</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar">
+          <span><img src="images/filter.png" style="width:40px"></span>
+      </button>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                  aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+              
+          </div>
+      </div>
+  </div>
+</nav> 
+
+<!--**offcanvas filtre**-->
+<script>
+    $(document).ready(function () {
+    $(".yetenekleri").click(function (event) {
+     id = $(this).attr("id"),
+    $.ajax({
+      type: "POST",
+      url: "/profile/favilansil/",
+      data: {
+        id: id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      
+    });
+    return false; //<---- move it here
+    });
+    });
+    </script>
+
+<script>
+$(document).ready(function () {
+$(".yetenekler").click(function (event) {
+ id = $(this).attr("id"),
+$.ajax({
+  type: "POST",
+  url: "/profile/favusersil/",
+  data: {
+    id: id,
+    csrfmiddlewaretoken: '{{ csrf_token }}'
+  },
+  
+});
+return false; //<---- move it here
+});
+});
+</script>
+{% endblock slider %}

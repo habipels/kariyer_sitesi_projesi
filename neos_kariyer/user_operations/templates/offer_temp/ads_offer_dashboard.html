@@ -1,0 +1,340 @@
+{% extends "homebase.html" %}
+{% load static %}
+{% block slider %}
+<div class="container-lg">
+
+    <div class="row">
+
+        <div class="col-12">
+            <!--sıralama-->
+            <div class="row">
+                <div class="col">
+                    
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        
+                    </div>
+                </div>
+            </div>
+            <!--**sıralama**-->
+            
+            <!--ilanlar-->
+            {% for i in offers %} 
+            <h6>Teklif vermiş olduğunuz ilanlar
+            </h6>
+                {% for j in articles %}
+                    {% if i.ads_ofer_id == j.id %}
+                        <div class="card">
+                            <h6 class="card-header">{{j.ilan_basligi}}
+                                {% if i.veto_status %}
+                                <p  style=" color: red; float:right" >Red Edildi</p>
+                                {% else %}
+                                    {% if i.acceptance_status %}
+                                
+                                        <p style="float:right; color: green;" >Onaylandı</p>
+                                    {% else %}
+                                        <p style="float:right; color: green;" >Beklemede</p>
+                                    {% endif %}
+                                {% endif %}
+                            </h6>
+                            <div class="card-body py-1">
+                                <div class="row">
+                                    {% if j.İlan_gorseli %}
+                                        <div class="col-12 col-lg-2 text-center"><img src="{{j.İlan_gorseli.url}}" class="kategori-img">
+                                    {% else %}
+                                    
+                                        <div class="col-12 col-lg-2 text-center"><img src="{% static 'images/dijital.png' %}" class="kategori-img">
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-12 col-lg-10">
+                                        <p class="card-text">
+                                            {{j.kisa_ilan_aciklamasi}}
+                                        </p>
+                                        <small class="card-text"><span class="detay">{{j.offer_much}} Teklif | Son 4 Gün | Deneyim: Farketmez
+                                                | </span> <b class="price">{{j.min_ucret}}₺ - {{j.max_ucret}}₺</b>
+                                        </small> <br>
+                                        <small class="card-text"><span class="detay">En düşük teklif: <b>{{j.chip_amunt}} ₺</b> | Senin
+                                                teklifin: <b style="color:green">{{i.offer_amount}} ₺</b> | İlan durumu: <b
+                                                    style="color:green;">Açık</b>
+                                            </span>
+                                        </small>
+                                        {% if i.veto_status %}
+                                        <a href="{% url 'adsoffer:offer_delete' i.id %}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-danger">Sil</a>
+                                        <a href="{% url 'adsoffer:adsshow' j.id %}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-success">Güncelle</a>
+                                       
+                                        {% else %}
+                                            {% if i.acceptance_status %}
+                                        
+                                                <p style="float:right; color: green;" >Kabul Edildi</p>
+                                            {% else %}
+                                            <a href="{% url 'adsoffer:offer_delete' i.id %}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-danger">Sil</a>
+                                            <a href="{% url 'adsoffer:adsshow' j.id %}" style="margin-left: 5px;" class="btn btn-sm apply-button btn-outline-success">Güncelle</a>
+                                            
+                                            {% endif %}
+                                        {% endif %}
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                    
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <!--**ilanlar**-->
+            
+           
+            <!--**ilanlar**-->
+        </div>
+    </div>
+</div>
+<div class="container-lg">
+
+    <div class="row">
+        <!--filtre-->
+        <div class="col-lg-3 col-md-5 col-12">
+            <div class="vertical-card-div filtre" style="top: 10%;">
+             
+                
+            </div>
+        </div>
+        <!--**filtre**-->
+  
+  
+        <div class="col-lg-9 col-md-7 col-12">
+            <!--sıralama-->
+            <div class="row">
+                <div class="col">
+                   
+                   
+                    
+                  
+                    
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                      
+                    </div>
+                </div>
+            </div>
+     
+  
+            <!--**sıralama**-->
+  
+            <!--uzmanlar-->
+            <div class="row justify-content-center">
+            <h6>İlana Davet Edilen Uzmanlar
+            </h6>
+              {% for k in ilana_davet_edilen %}
+              {% for ilanlar in ilanlarim %}
+
+              {% for j in uzman2 %}
+              {% for i in uzman %}
+              {% if ilanlar.id == k.ads_ofer_id %}
+              
+              {% if k.offer_user_id == i.id %}
+              
+              
+              {% if i.user_id != request.user.id %}
+                {% if i.user_id == j.user_id %}
+                
+                <div class="col-lg-3 col-6 ">
+                    <div class="card uzman-card">
+                        {% if i.profil_img  %}
+                        <a href="{% url 'profile:profileshow' i.id %}">
+                        <img src="{{i.profil_img.url}}" class="card-img-top" alt="..."></a>
+                        {% else %}
+                        <a href="{% url 'profile:profileshow' i.id %}">
+                        <img src="{% static 'images/hero.jpg' %}" class="card-img-top" alt="..."></a>
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="card-title">{{i.user_kategori}}</h6>
+                            <h6 class="card-subtitle text-muted" style="font-size:13px;">{{i.isim_soyisim}}</h6>
+                            <div class="kisisel-bilgiler">
+                                <div style="display:inline;"><img src="{% static 'images/ikonlar/1.png' %}"><small>{{i.lokasyon}}</small>
+                                </div>
+                                <div style="display:inline;margin-left:5px;"><img
+                                        src="{% static 'images/ikonlar/7.png' %}"><small>{{j.deneyim}}
+                                    </small>
+                                </div>
+                            </div>
+                            <p class="card-text uzman-text">{{i.on_bilgi}}
+                              {% if ilan_yapma %}
+                              {% else %}
+                              <b class="price"></b> | 
+                              
+  
+                              {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+              {% else %}
+               {% endif %}
+              {% else %}
+                {% endif %}
+               {% else %}
+               
+              {% endif %}
+              {% else %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+            <!--**uzmanlar**-->
+        
+  
+  
+  
+    
+    
+  
+  <hr>
+  <!--uzmanlar-->
+            <div class="row justify-content-center">
+              {% for k in calismak_icin_verilen_teklifler %}
+              <h6>Çalışmak İçin Teklif Verdiğiniz Kullanıcılar
+            </h6>
+
+              {% for j in uzman2 %}
+              {% for i in uzman %}
+
+              {% if k.expert_offers_user_id == i.user_id %}
+              
+              
+              {% if i.user_id != request.user.id %}
+                {% if i.user_id == j.user_id %}
+                
+                <div class="col-lg-3 col-6 ">
+                    <div class="card uzman-card">
+                        {% if i.profil_img  %}
+                        <a href="{% url 'profile:profileshow' i.id %}">
+                        <img src="{{i.profil_img.url}}" class="card-img-top" alt="..."></a>
+                        {% else %}
+                        <a href="{% url 'profile:profileshow' i.id %}">
+                        <img src="{% static 'images/hero.jpg' %}" class="card-img-top" alt="..."></a>
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="card-title">{{i.user_kategori}}</h6>
+                            <h6 class="card-subtitle text-muted" style="font-size:13px;">{{i.isim_soyisim}}</h6>
+                            <div class="kisisel-bilgiler">
+                                <div style="display:inline;"><img src="{% static 'images/ikonlar/1.png' %}"><small>{{i.lokasyon}}</small>
+                                </div>
+                                <div style="display:inline;margin-left:5px;"><img
+                                        src="{% static 'images/ikonlar/7.png' %}"><small>{{j.deneyim}}
+                                    </small>
+                                </div>
+                            </div>
+                            <p class="card-text uzman-text">{{i.on_bilgi}}
+                              {% if ilan_yapma %}
+                              {% else %}
+                              <b class="price"></b> | 
+                              
+  
+                              {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+              {% else %}
+               {% endif %}
+              {% else %}
+                {% endif %}
+               {% else %}
+               
+              {% endif %}
+              
+              {% endfor %}
+            {% endfor %}
+            
+            {% endfor %}
+            <!--**uzmanlar**-->
+        
+  </div>
+  </div>
+  <br><br>
+  {% if uzman.has_other_pages %}
+  
+  <nav  aria-label="Page navigation example">
+  
+    <ul class="pagination justify-content-center">
+  {% if uzman.has_previous %}
+  <li class="page-item"><a class="page-link" href="?sayfa={{ uzman.previous_page_number }}">Geri</a></li>
+  {% else %}
+  <li class="page-item disabled">
+  <p class="disabled" ><span class="page-link">Geri</span></p></li>
+  {% endif %}
+  {% for i in uzman.paginator.page_range %}
+  {% if uzman.number == i %}
+  <li class="page-item"><a class="page-link"  href="?sayfa={{ i }}"><u>{{ i }}</u></a></li>
+  {% else %}
+  <li class="page-item"><a class="page-link"  href="?sayfa={{ i }}">{{ i }}</a></li>
+  {% endif %}
+  {% endfor %}
+  {% if uzman.has_next %}
+  <li class="page-item"><a class="page-link"  href="?sayfa={{ uzman.next_page_number }}">İleri</a></li>
+  
+  {% else %}
+  <li class="page-item disabled">
+    <p class="disabled"><span class="page-link">İleri</span></p></li>
+  
+  {% endif %}
+  </ul>
+  
+  </nav>
+  
+  {% endif %}
+  </div>
+  
+  </div>
+  
+  
+  
+  </div>
+  <!--offcanvas filtre-->
+  <nav class="navbar navbar-light bg-light fixed-bottom mycanvas">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Detaylı arama</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar">
+            <span><img src="images/filter.png" style="width:40px"></span>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                
+            </div>
+        </div>
+    </div>
+  </nav>  
+  
+  
+  <script>
+  $(document).ready(function () {
+  $(".yetenekler").click(function (event) {
+   id = $(this).attr("id"),
+  $.ajax({
+    type: "POST",
+    url: "/profile/favuserekle/",
+    data: {
+      id: id,
+      csrfmiddlewaretoken: '{{ csrf_token }}'
+    },
+    
+  });
+  return false; //<---- move it here
+  });
+  });
+  </script>
+
+{% endblock slider %}
+

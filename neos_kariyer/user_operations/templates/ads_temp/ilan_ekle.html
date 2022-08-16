@@ -1,0 +1,76 @@
+
+{% extends "homebase.html" %}
+{% block slider %}
+{% load crispy_forms_tags %}
+<br>
+<br>
+
+
+
+
+<div class="row">
+    
+      <!--<div class="col-md-4 col-4 mr-4 text-center"><h5><b>İlan Kategorisi</b></h5>
+            <form action="." method="post">
+                <input type="text" name="s">
+            </form>
+            </div>-->
+            <div class="col-12 text-center" >
+        <h3>İlan  Oluştur</h3>
+    </div>
+        <hr>
+        <form action="." method = "post" enctype="multipart/form-data">
+            <div class="container"> 
+                <div class="row gx-5">
+                
+            <div class="col-md-4 col-4 mr-4 text-center" >
+                {% csrf_token %}
+            </div>
+            <label for="cars">Aranan Deneyim:</label>
+
+            <select name="cars" id="cars">
+                {% for i in  deneyimler %}
+            <option value="{{i.id}}">{{i.tecrube}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="z">İlan Kategorisi:</label>
+            <select name="haft" id="z">
+                {% for i in  ilan_calisma_saati %}
+            <option value="{{i.id}}">{{i.kategory_ismi}}</option>
+                {% endfor %}
+            </select>
+            <label for="m">İlan Ücretlendirmesi:</label>
+            <select name="ucretlendirmeler" id="m">
+                {% for i in  ilan_ucretlendirmesi %}
+            <option value="{{i.id}}">{{i.ucretlendirmesi}}</option>
+                {% endfor %}
+            </select>
+            <label for="k">İlan Lokasyon:</label>
+            <select name="lokasyon" id="k">
+                {% for i in  lokasyonlar %}
+            <option value="{{i.id}}">{{i.sehir_ismi}}</option>
+                {% endfor %}
+            </select>
+            <div class="col-md-7 col-12" >
+                <label for="ilanismi" style="width: 200px;"> İlan Başlığı : </label> {{form.ilan_basligi}}<br><br>
+                <label for="ilanismi" style="width: 200px;"> İlan Kısa Açıklama : </label> {{form.kisa_ilan_aciklamasi}}<br>
+                <label for="ilanismi"> İlan Detayı :</label>{{form.media}} {{form.ilan}}<br><br>
+                <label for="ilanismi" style="width: 200px;"> İlan Görseli :</label> {{form.İlan_gorseli}}<br><br>
+                <label for="ilanismi" style="width: 200px;"> Maksimum Ücret :</label> {{form.max_ucret}}<br><br>
+                <label for="ilanismi" style="width: 200px;"> Minimum Ücret :</label> {{form.min_ucret}}<br>
+            {% csrf_token %}
+            
+            <br>
+            <button type = "submit" class = "btn btn-danger">İlan Ekle</button>
+            </div>
+        </div>
+    </div>
+            
+            
+        </form>
+    
+  </div>
+
+{% endblock slider %}
+{% include "scripts.html" %}

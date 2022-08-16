@@ -1,0 +1,65 @@
+{% extends "homebase.html" %}
+
+{% block slider %}
+
+<div class="row">
+<div class="row mt-5">
+    <div class="col-12 text-center" >
+        <h3>İlan  Güncelle</h3>
+    </div>
+        <hr>
+        
+        <form  method = "post" enctype="multipart/form-data">
+            <div class="container"> 
+                <div class="row gx-5">
+            <div class="col-md-1 col-1 mr-1 text-cente" >
+                {% csrf_token %}
+            </div>
+            <label for="cars">Aranan Deneyim:</label>
+
+            <select name="cars" id="cars">
+                {% for i in  deneyimler %}
+            <option value="{{i.id}}">{{i.tecrube}}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="z">İlan Kategorisi:</label>
+            <select name="haft" id="z">
+                {% for i in  ilan_calisma_saati %}
+            <option value="{{i.id}}">{{i.kategory_ismi}}</option>
+                {% endfor %}
+            </select><br>
+            <label for="m">İlan Ücretlendirmesi:</label>
+            <select name="ucretlendirmeler" id="m">
+                {% for i in  ilan_ucretlendirmesi %}
+            <option value="{{i.id}}">{{i.ucretlendirmesi}}</option>
+                {% endfor %}
+            </select><br>
+            <label for="k">İlan Lokasyon:</label>
+            <select name="lokasyon" id="k">
+                {% for i in  lokasyonlar %}
+            <option value="{{i.id}}">{{i.sehir_ismi}}</option>
+                {% endfor %}
+            </select>
+            <div class="col-md-10 col-12" >
+                <br><br>
+                <label for="ilanismi" style="width: 200px;"> İlan Başlığı : </label> {{form.ilan_basligi}}<br><br>
+                <label for="ilanismi" style="width: 200px;"> İlan Kısa Açıklama : </label> {{form.kisa_ilan_aciklamasi}}<br>
+                <label for="ilanismi"> İlan Detayı :</label>{{form.media}} {{form.ilan}}<br><br>
+                <label for="ilanismi" style="width: 200px;"> İlan Görseli :</label> {{form.İlan_gorseli}}<br><br>
+               
+            {% csrf_token %}
+            
+            <br>
+            <button type = "submit" class = "btn btn-danger">İlan Güncelle</button>
+            <br><br>
+            </div>
+        </div>
+    </div>
+            
+            
+        </form>
+  </div><br>
+
+</div>
+{% endblock slider %}

@@ -1,0 +1,71 @@
+{% load static %}
+
+<nav class="navbar-desktop navbar navbar-expand-sm navbar-light bg-light py-3">
+    <div class="container">
+        <a class="navbar-brand" href="/"><img src="{% static 'images/logo.png' %}" alt="yapbikariyer logo" width="60"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Anasayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'adsoffer:allads' %}">İlanlar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'adsoffer:allexpert' %}">Uzmanlar</a>
+                </li>
+
+            </ul>
+            <form class="d-flex">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="/profile/profil/" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Hesabım
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/profile/profil/">Profil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'adsoffer:offerdashboard'  %}">Başvurularım</a></li>
+                            {% if ilan_yapma %}
+                            
+                            {% else %}
+                            <li><a class="dropdown-item" href="/ads/dashboard/">İlanlarım</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{% url 'adsoffer:inbox'  %}">Gelen kutusu</a></li>
+                            <li><a class="dropdown-item" href="/profile/favorilerim/">İzleme Listem</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/buy/buy/">Bakiye: {{bakiye}}ƒ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"><img class="rounded-circle" src="{% static '/images/ilan-avatar.png' %}" alt="" style="width:35px;height:35px;object-fit:cover;"></a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active " style="color: grey !important;"  aria-current="page" href="{% url 'user_operations:logout'  %}">Çıkış</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        
+                        <a class="nav-link active " style="color: green !important;" aria-current="page" href="{% url 'user_operations:login'  %}">Giriş</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active " style="color: green !important;"  aria-current="page" href="{% url 'user_operations:register'  %}">Kaydol</a>
+                    </li>
+                    {% endif %}
+                    
+                </ul>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!--**navbar for desktop**-->
